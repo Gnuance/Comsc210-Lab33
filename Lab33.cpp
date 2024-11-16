@@ -74,10 +74,14 @@ int main()
 
             if (randNumber <= CHANCE_CAR_PAYS) // car pays
             {
-                /* code */
+                tempCar = it->front();
+                it->pop_front();
+                cout << "Car paid: ";
             } else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
             {
-                /* code */
+                tempCar = Car();
+                it->push_back(tempCar);
+                cout << "Car joined: ";
             } else { // car switches
 
             }
