@@ -28,7 +28,7 @@
 using namespace std;
 
 // variables for starting number of cars, liklihood of car paying, liklihood of new car joining line
-const int NUM_INITIAL_CARS = 2, NUM_PLAZA_LANES = 4, CHANCE_CAR_PAYS = 46, CHANCE_NEW_CAR_JOINS = 39, CHANCE_REAR_CHANGES_LANE = 15, CHANCE_JOIN_IF_EMPTY = 50;
+const int NUM_INITIAL_CARS = 2, NUM_SIMULATIONS = 20, NUM_PLAZA_LANES = 4, CHANCE_CAR_PAYS = 46, CHANCE_NEW_CAR_JOINS = 39, CHANCE_REAR_CHANGES_LANE = 15, CHANCE_JOIN_IF_EMPTY = 50;
 
 // for simulation where car pays and joins queue are separate events
 bool FrontCarPaid();
@@ -61,7 +61,7 @@ int main()
     }
 
     // run simulation for 20 iterations
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < NUM_SIMULATIONS; i++)
     {
         // timeperiod
         cout << "\nTime: " << i + 1 << endl;
@@ -70,7 +70,7 @@ int main()
         for (int j = 0; j < tollPlaza.size(); j++)
         {
             // output lane to console
-            cout << "Lane " << j << ": ";
+            cout << "Lane " << j + 1 << ": ";
 
             // get random number to check toll booth events
             randNumber = (rand() % 100) + 1;
@@ -84,6 +84,8 @@ int main()
                     tempCar = Car();
                     tollPlaza.at(j).push_back(tempCar);
                     cout << "Car joined: ";
+                    // output car to console
+                    tempCar.print();
                 }
             }
             else
@@ -110,14 +112,14 @@ int main()
                     tollPlaza.at(j).pop_back();
                     tollPlaza.at(newLane).push_back(tempCar);
                 }
+                // output car to console
+                tempCar.print();
             }
-            // output car to console
-            tempCar.print();
         }
         // output each queue to console
         for (int j = 0; j < tollPlaza.size(); j++)
         {
-            cout << "Queue:\n";
+            cout << "Lane " << j + 1 << " Queue:\n";
             CurrentQueueToConsole(tollPlaza.at(j));
         }
     }
