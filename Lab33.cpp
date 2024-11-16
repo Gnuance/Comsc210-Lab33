@@ -1,20 +1,28 @@
-/*  Lab 32: Toll Booth
-    Objective: Write a program that will simulate a line of cars lined up to pay their toll at a toll booth. We will start with a certain number of cars in the line, and repeatedly perform these line operations until the line is empty:
-        1. 55% probability that the car at the head of the line pays its toll and leaves the toll booth
-            45% probability that another car joins the line for the toll booth
+/*  Lab 33: Toll Plaza
+    Objective:
+        1. Add multiple lanes into the management system to simulate an entire plaza of toll booths
+        2. Add the capability for a car at the rear of a lane to switch lanes
 
     Requirements:
-        1. Use an std::deque. This means our program structure will be a deque of Cars.
-        2. Use a constant and initialize it to 2 to determine the initial size of the deque when the simulation starts (representing how many cars are already in line to pay the toll when the simulation starts).
-        3. Use the Car class to create Car objects, which are placed in the std::deque representing the toll booth lane.
-        4. Do not alter the Car class.
-        5. Run the simulation until the queue is empty.
-        6. After each time period, display the queue using the .print() method in the Car class.
+        1. These are the additional requirements for this lab. These assume you have completed Lab 32 and have a working tool booth simulation.
+        2. Add More Lanes:
+            a. There are now 4 toll booth lanes at play. Use an array to hold the lanes. The array will be of type deque<Car>. When the simulation starts, pre-populate the lanes with 1-3 cars like before.Each time period will now have operations happening on all lines.
+            b. Add Switching Lanes
+            c. Any car at the end of any queue can switch lanes to a random lane that's not their original lane.
+        3. Probabilities:
+            a. The three possible operations and their probabilities are:
+                - 46% probability that the car at the head of the queue pays its toll and leaves the queue
+                - 39% probability that another car joins the queue
+                - 15% probability that the rear car will shift lanes
+            b. All these probability values need to be stored as constants defined in your program, never in hard-coding.
+            c. If a lane is currently empty but there is still more time in the simulation, those probabilities will be just 50/50 if a new car enters the queue or not. Of course another car might shift lanes into it, but that's a different lane's business.
+        4. Termination Criteria: Run the simulation for 20 time periods.
 */
 
 #include <iostream>
 #include <string>
 #include <deque>
+#include <array>
 #include "Car.h"
 using namespace std;
 
@@ -31,6 +39,7 @@ int main()
 {
     srand(static_cast<unsigned int>(time(nullptr))); // seed current time to rand()
     deque<Car> tollBooth = {};                       // empty toll booth line
+    array<deque<car>> tollPlaza = array<deque<car>>;
     int count = 0;
     Car tempCar;
     string output = "";
