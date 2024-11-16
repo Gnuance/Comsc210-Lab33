@@ -43,7 +43,7 @@ int main()
     int count = 0;
     Car tempCar;
     string output = "";
-    deque<Car> plaza[4] = {};
+    // deque<Car> plaza[4] = {}; // alternative option
 
     // initialize toll plaza
     cout << "Initial queue:\n";
@@ -58,31 +58,38 @@ int main()
         CurrentQueueToConsole(*it);
     }
 
-    // run simulation until toll booth is empty
-    // while (!tollBooth.empty())
-    // {
-    //     // timeperiod
-    //     cout << "Time: " << ++count << " - ";
-    //     // assumes either car pays OR car joins queue
-    //     if (((rand() % 100) + 1) <= CHANCE_CAR_PAYS)
-    //     {
-    //         // car paid, get from front and pop with console output
-    //         tempCar = tollBooth.front();
-    //         tollBooth.pop_front();
-    //         cout << "Car paid: ";
-    //     }
-    //     else
-    //     {
-    //         // car didn't pay, so another car joined, push to back and output to console
-    //         tempCar = Car();
-    //         tollBooth.push_back(tempCar);
-    //         cout << "Car joined: ";
-    //     }
-    //     tempCar.print(); // output car popped or pushed
-    //     // output list at end of period
-    //     CurrentQueueToConsole(tollBooth);
-    //     cout << endl;
-    // }
+    // run simulation for 20 iterations
+    for (int i = 0; i < 20; i++)
+    {
+        // timeperiod
+        cout << "Time: " << i + 1 << " - ";
+
+        // for each lane in the toll plaza
+        for (auto it = tollPlaza.begin(); it != tollPlaza.end(); it++)
+        {
+            
+        }
+
+        // assumes either car pays OR car joins queue
+        if (((rand() % 100) + 1) <= CHANCE_CAR_PAYS)
+        {
+            // car paid, get from front and pop with console output
+            tempCar = tollBooth.front();
+            tollBooth.pop_front();
+            cout << "Car paid: ";
+        }
+        else
+        {
+            // car didn't pay, so another car joined, push to back and output to console
+            tempCar = Car();
+            tollBooth.push_back(tempCar);
+            cout << "Car joined: ";
+        }
+        tempCar.print(); // output car popped or pushed
+        // output list at end of period
+        CurrentQueueToConsole(tollBooth);
+        cout << endl;
+    }
 
     return 0;
 }
