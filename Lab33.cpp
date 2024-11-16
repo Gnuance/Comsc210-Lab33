@@ -73,72 +73,76 @@ int main()
             randNumber = (rand() % 100) + 1;
 
             // check if toll booth lane is empty
-            if (tollPlaza.at(j).empty())
+            if (!tollPlaza.at(j).empty())
+            {                            
+                // if toll booth lane not empty
+                if (randNumber <= CHANCE_CAR_PAYS) // car pays
+                {
+                    tempCar = tollPlaza.at(j).front();
+                    tollPlaza.at(j).pop_front();
+                    cout << "Car paid: ";
+                }
+                else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
+                {
+                    tempCar = Car();
+                    tollPlaza.at(j).push_back(tempCar);
+                    cout << "Car joined: ";
+                }
+                else
+                { // car switches
+                    // get new lane to switch to
+                    int newLane = (j + (rand() % (NUM_PLAZA_LANES - 1)) + 1) % NUM_PLAZA_LANES;
+                    // get car, remove from current lane, switch to new lane
+                    tempCar = tollPlaza.at(j).back();
+                    tollPlaza.at(j).pop_back();
+                    tollPlaza.at(newLane).push_back(tempCar);
+                }
+            }
+            else
             {
-                // check if car joins empty lane
+                // lane empty: check if car joins empty lane
                 if (randNumber <= CHANCE_JOIN_IF_EMPTY)
                 {
+                    tempCar = Car();
+                    tollPlaza.at(j).push_back(tempCar);
+                } else {
                     
                 }
             }
 
-            // if toll booth lane not empty
-            if (randNumber <= CHANCE_CAR_PAYS) // car pays
-            {
-                tempCar = tollPlaza.at(j).front();
-                tollPlaza.at(j).pop_front();
-                cout << "Car paid: ";
-            }
-            else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
-            {
-                tempCar = Car();
-                tollPlaza.at(j).push_back(tempCar);
-                cout << "Car joined: ";
-            }
-            else
-            { // car switches
-                // get new lane to switch to
-                int newLane = (j + (rand() % (NUM_PLAZA_LANES - 1)) + 1) % NUM_PLAZA_LANES;
-                // get car, remove from current lane, switch to new lane
-                tempCar = tollPlaza.at(j).back();
-                tollPlaza.at(j).pop_back();
-                tollPlaza.at(newLane).push_back(tempCar);
-            }
+            cout << endl;
         }
 
-        cout << endl;
+        return 0;
     }
 
-    return 0;
-}
-
-// returns whether front car pays and leaves
-bool FrontCarPaid()
-{
-    return ((rand() % 100) + 1) <= CHANCE_CAR_PAYS;
-}
-
-// returns whether a new car will join line
-bool NewCarJoinsQueue()
-{
-    return ((rand() % 100) + 1) <= CHANCE_NEW_CAR_JOINS;
-}
-
-// outputs each element in toll booth
-void CurrentQueueToConsole(deque<Car> &q)
-{
-    // guard statement
-    if (q.empty())
+    // returns whether front car pays and leaves
+    bool FrontCarPaid()
     {
-        cout << "\tEmpty\n";
-        return;
+        return ((rand() % 100) + 1) <= CHANCE_CAR_PAYS;
     }
 
-    int count = 0;
-    for (auto it = q.begin(); it != q.end(); it++)
+    // returns whether a new car will join line
+    bool NewCarJoinsQueue()
     {
-        cout << "\t";
-        it->print();
-        count++;
+        return ((rand() % 100) + 1) <= CHANCE_NEW_CAR_JOINS;
     }
-}
+
+    // outputs each element in toll booth
+    void CurrentQueueToConsole(deque<Car> & q)
+    {
+        // guard statement
+        if (q.empty())
+        {
+            cout << "\tEmpty\n";
+            return;
+        }
+
+        int count = 0;
+        for (auto it = q.begin(); it != q.end(); it++)
+        {
+            cout << "\t";
+            it->print();
+            count++;
+        }
+    }
