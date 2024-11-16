@@ -15,7 +15,8 @@
                 - 39% probability that another car joins the queue
                 - 15% probability that the rear car will shift lanes
             b. All these probability values need to be stored as constants defined in your program, never in hard-coding.
-            c. If a lane is currently empty but there is still more time in the simulation, those probabilities will be just 50/50 if a new car enters the queue or not. Of course another car might shift lanes into it, but that's a different lane's business.
+            c. If a lane is currently empty but there is still more time in the simulation, those probabilities will be just 50/50 if a new car enters the queue or not.
+                Of course another car might shift lanes into it, but that's a different lane's business.
         4. Termination Criteria: Run the simulation for 20 time periods.
 */
 
@@ -27,7 +28,7 @@
 using namespace std;
 
 // variables for starting number of cars, liklihood of car paying, liklihood of new car joining line
-const int NUM_INITIAL_CARS = 2, CHANCE_CAR_PAYS = 55, CHANCE_NEW_CAR_JOINS = 45;
+const int NUM_INITIAL_CARS = 2, CHANCE_CAR_PAYS = 46, CHANCE_NEW_CAR_JOINS = 39, CHANCE_REAR_CHANGES_LANE = 15, CHANCE_JOIN_IF_EMPTY = 50;
 
 // for simulation where car pays and joins queue are separate events
 bool FrontCarPaid();
@@ -67,7 +68,7 @@ int main()
         // for each lane in the toll plaza
         for (auto it = tollPlaza.begin(); it != tollPlaza.end(); it++)
         {
-            
+
         }
 
         // assumes either car pays OR car joins queue
