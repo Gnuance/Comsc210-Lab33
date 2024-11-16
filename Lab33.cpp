@@ -43,6 +43,7 @@ int main()
     int count = 0;
     Car tempCar;
     string output = "";
+    deque<Car> plaza[4] = {};
 
     // initialize toll plaza
     cout << "Initial queue:\n";
@@ -53,8 +54,8 @@ int main()
         {
             it->push_back(Car());
         }
+        cout << "Lane " << ++count << ":\n";
         CurrentQueueToConsole(*it);
-        cout << endl;
     }
 
     // run simulation until toll booth is empty
