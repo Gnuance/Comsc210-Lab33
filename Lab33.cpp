@@ -41,6 +41,7 @@ int main()
     srand(static_cast<unsigned int>(time(nullptr))); // seed current time to rand()
     deque<Car> tollBooth = {};                       // empty toll booth line
     array<deque<Car>, 4> tollPlaza = {};
+    int randNumber = 0;
     int count = 0;
     Car tempCar;
     string output = "";
@@ -68,6 +69,20 @@ int main()
         // for each lane in the toll plaza
         for (auto it = tollPlaza.begin(); it != tollPlaza.end(); it++)
         {
+            // get random number to check toll booth events
+            randNumber = (rand() % 100) + 1;
+
+            if (randNumber <= CHANCE_CAR_PAYS) // car pays
+            {
+                /* code */
+            } else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
+            {
+                /* code */
+            } else { // car switches
+
+            }
+            
+            
 
         }
 
