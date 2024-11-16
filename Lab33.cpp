@@ -39,45 +39,49 @@ int main()
 {
     srand(static_cast<unsigned int>(time(nullptr))); // seed current time to rand()
     deque<Car> tollBooth = {};                       // empty toll booth line
-    array<deque<car>> tollPlaza = array<deque<car>>;
+    array<deque<Car>, 4> tollPlaza = {};
     int count = 0;
     Car tempCar;
     string output = "";
 
-    // initialize toll booth with 2 vehicles and output to console
-    for (int i = 0; i < NUM_INITIAL_CARS; i++)
-    {
-        tollBooth.push_back(Car());
-    }
+    // initialize toll plaza
     cout << "Initial queue:\n";
-    CurrentQueueToConsole(tollBooth);
-    cout << endl;
-
-    // run simulation until toll booth is empty
-    while (!tollBooth.empty())
+    for (auto it = tollPlaza.begin(); it != tollPlaza.end(); it++)
     {
-        // timeperiod
-        cout << "Time: " << ++count << " - ";
-        // assumes either car pays OR car joins queue
-        if (((rand() % 100) + 1) <= CHANCE_CAR_PAYS)
+        // for each toll booth, initialize toll booth with 2 vehicles and output to console
+        for (int i = 0; i < NUM_INITIAL_CARS; i++)
         {
-            // car paid, get from front and pop with console output
-            tempCar = tollBooth.front();
-            tollBooth.pop_front();
-            cout << "Car paid: ";
+            it->push_back(Car());
         }
-        else
-        {
-            // car didn't pay, so another car joined, push to back and output to console
-            tempCar = Car();
-            tollBooth.push_back(tempCar);
-            cout << "Car joined: ";
-        }
-        tempCar.print(); // output car popped or pushed
-        // output list at end of period
-        CurrentQueueToConsole(tollBooth);
+        CurrentQueueToConsole(*it);
         cout << endl;
     }
+
+    // run simulation until toll booth is empty
+    // while (!tollBooth.empty())
+    // {
+    //     // timeperiod
+    //     cout << "Time: " << ++count << " - ";
+    //     // assumes either car pays OR car joins queue
+    //     if (((rand() % 100) + 1) <= CHANCE_CAR_PAYS)
+    //     {
+    //         // car paid, get from front and pop with console output
+    //         tempCar = tollBooth.front();
+    //         tollBooth.pop_front();
+    //         cout << "Car paid: ";
+    //     }
+    //     else
+    //     {
+    //         // car didn't pay, so another car joined, push to back and output to console
+    //         tempCar = Car();
+    //         tollBooth.push_back(tempCar);
+    //         cout << "Car joined: ";
+    //     }
+    //     tempCar.print(); // output car popped or pushed
+    //     // output list at end of period
+    //     CurrentQueueToConsole(tollBooth);
+    //     cout << endl;
+    // }
 
     return 0;
 }
@@ -94,10 +98,9 @@ bool NewCarJoinsQueue()
     return ((rand() % 100) + 1) <= CHANCE_NEW_CAR_JOINS;
 }
 
-// outputs each element in deque
+// outputs each element in toll booth
 void CurrentQueueToConsole(deque<Car> &q)
 {
-    cout << "Queue:\n";
     // guard statement
     if (q.empty())
     {
