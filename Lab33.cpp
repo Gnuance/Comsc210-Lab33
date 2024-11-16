@@ -60,7 +60,7 @@ int main()
         CurrentQueueToConsole(tollPlaza.at(i));
     }
 
-    // run simulation for 20 iterations
+    // run simulation for selected number of iterations
     for (int i = 0; i < NUM_SIMULATIONS; i++)
     {
         // timeperiod
@@ -86,6 +86,8 @@ int main()
                     cout << "Car joined: ";
                     // output car to console
                     tempCar.print();
+                } else {
+                    cout << "\n";
                 }
             }
             else
@@ -111,6 +113,7 @@ int main()
                     tempCar = tollPlaza.at(j).back();
                     tollPlaza.at(j).pop_back();
                     tollPlaza.at(newLane).push_back(tempCar);
+                    cout << "Car switched to lane " << newLane + 1 << ": ";
                 }
                 // output car to console
                 tempCar.print();
