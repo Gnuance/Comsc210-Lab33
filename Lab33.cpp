@@ -28,23 +28,18 @@
 using namespace std;
 
 // variables for starting number of cars, liklihood of car paying, liklihood of new car joining line
-const int NUM_INITIAL_CARS = 2, NUM_SIMULATIONS = 20, NUM_PLAZA_LANES = 4, CHANCE_CAR_PAYS = 46, CHANCE_NEW_CAR_JOINS = 39, CHANCE_REAR_CHANGES_LANE = 15, CHANCE_JOIN_IF_EMPTY = 50;
+const int NUM_INITIAL_CARS = 2, NUM_SIMULATIONS = 20, NUM_PLAZA_LANES = 4;
+const int CHANCE_CAR_PAYS = 46, CHANCE_NEW_CAR_JOINS = 39, CHANCE_REAR_CHANGES_LANE = 15, CHANCE_JOIN_IF_EMPTY = 50;
 
-// for simulation where car pays and joins queue are separate events
-bool FrontCarPaid();
-bool NewCarJoinsQueue();
 // prints current queue
 void CurrentQueueToConsole(deque<Car> &);
 
 int main()
 {
     srand(static_cast<unsigned int>(time(nullptr))); // seed current time to rand()
-    deque<Car> tollBooth = {};                       // empty toll booth line
     array<deque<Car>, NUM_PLAZA_LANES> tollPlaza = {};
     int randNumber = 0;
-    int count = 0;
     Car tempCar;
-    string output = "";
     // deque<Car> tollPlaza[4] = {}; // alternative option
 
     // initialize toll plaza
@@ -56,7 +51,7 @@ int main()
         {
             tollPlaza.at(i).push_back(Car());
         }
-        cout << "Lane " << ++count << ":\n";
+        cout << "Lane " << i + 1 << ":\n";
         CurrentQueueToConsole(tollPlaza.at(i));
     }
 
@@ -71,11 +66,11 @@ int main()
         {
             // output lane to console
             cout << "Lane " << j + 1 << ": ";
-
+            
             // get random number to check toll booth events
             randNumber = (rand() % 100) + 1;
 
-            // check if toll booth lane is empty
+            // guard statment: check if toll booth lane is empty, perform operation & continue
             if (tollPlaza.at(j).empty())
             {
                 // lane empty: check if car joins empty lane
@@ -86,38 +81,39 @@ int main()
                     cout << "Car joined: ";
                     // output car to console
                     tempCar.print();
-                } else {
-                    cout << "\n";
-                }
-            }
-            else
-            {
-                // if toll booth lane not empty
-                if (randNumber <= CHANCE_CAR_PAYS) // car pays
-                {
-                    tempCar = tollPlaza.at(j).front();
-                    tollPlaza.at(j).pop_front();
-                    cout << "Car paid: ";
-                }
-                else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
-                {
-                    tempCar = Car();
-                    tollPlaza.at(j).push_back(tempCar);
-                    cout << "Car joined: ";
                 }
                 else
-                { // car switches
-                    // get new lane to switch to
-                    int newLane = (j + (rand() % (NUM_PLAZA_LANES - 1)) + 1) % NUM_PLAZA_LANES;
-                    // get car, remove from current lane, switch to new lane
-                    tempCar = tollPlaza.at(j).back();
-                    tollPlaza.at(j).pop_back();
-                    tollPlaza.at(newLane).push_back(tempCar);
-                    cout << "Car switched to lane " << newLane + 1 << ": ";
+                {
+                    cout << "\n";
                 }
-                // output car to console
-                tempCar.print();
+                continue;
             }
+
+            // if toll booth lane not empty
+            if (randNumber <= CHANCE_CAR_PAYS) // car pays
+            {
+                tempCar = tollPlaza.at(j).front();
+                tollPlaza.at(j).pop_front();
+                cout << "Car paid: ";
+            }
+            else if (randNumber <= CHANCE_CAR_PAYS + CHANCE_NEW_CAR_JOINS) // car joins
+            {
+                tempCar = Car();
+                tollPlaza.at(j).push_back(tempCar);
+                cout << "Car joined: ";
+            }
+            else
+            { // car switches
+                // get new lane to switch to
+                int newLane = (j + (rand() % (NUM_PLAZA_LANES - 1)) + 1) % NUM_PLAZA_LANES;
+                // get car, remove from current lane, switch to new lane
+                tempCar = tollPlaza.at(j).back();
+                tollPlaza.at(j).pop_back();
+                tollPlaza.at(newLane).push_back(tempCar);
+                cout << "Car switched to lane " << newLane + 1 << ": ";
+            }
+            // output car to console
+            tempCar.print();
         }
         // output each queue to console
         for (int j = 0; j < tollPlaza.size(); j++)
@@ -127,18 +123,6 @@ int main()
         }
     }
     return 0;
-}
-
-// returns whether front car pays and leaves
-bool FrontCarPaid()
-{
-    return ((rand() % 100) + 1) <= CHANCE_CAR_PAYS;
-}
-
-// returns whether a new car will join line
-bool NewCarJoinsQueue()
-{
-    return ((rand() % 100) + 1) <= CHANCE_NEW_CAR_JOINS;
 }
 
 // outputs each element in toll booth
