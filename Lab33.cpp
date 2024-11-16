@@ -64,7 +64,7 @@ int main()
     for (int i = 0; i < 20; i++)
     {
         // timeperiod
-        cout << "Time: " << i + 1 << " - ";
+        cout << "\nTime: " << i + 1 << " - ";
 
         // for each lane in the toll plaza
         for (int j = 0; j < tollPlaza.size(); j++)
@@ -72,6 +72,17 @@ int main()
             // get random number to check toll booth events
             randNumber = (rand() % 100) + 1;
 
+            // check if toll booth lane is empty
+            if (tollPlaza.at(j).empty())
+            {
+                // check if car joins empty lane
+                if (randNumber <= CHANCE_JOIN_IF_EMPTY)
+                {
+                    
+                }
+            }
+
+            // if toll booth lane not empty
             if (randNumber <= CHANCE_CAR_PAYS) // car pays
             {
                 tempCar = tollPlaza.at(j).front();
@@ -87,28 +98,14 @@ int main()
             else
             { // car switches
                 // get new lane to switch to
-                int newLane = (rand() % (NUM_PLAZA_LANES - 1)) + 1;
+                int newLane = (j + (rand() % (NUM_PLAZA_LANES - 1)) + 1) % NUM_PLAZA_LANES;
+                // get car, remove from current lane, switch to new lane
+                tempCar = tollPlaza.at(j).back();
+                tollPlaza.at(j).pop_back();
+                tollPlaza.at(newLane).push_back(tempCar);
             }
         }
 
-        // assumes either car pays OR car joins queue
-        if (((rand() % 100) + 1) <= CHANCE_CAR_PAYS)
-        {
-            // car paid, get from front and pop with console output
-            tempCar = tollBooth.front();
-            tollBooth.pop_front();
-            cout << "Car paid: ";
-        }
-        else
-        {
-            // car didn't pay, so another car joined, push to back and output to console
-            tempCar = Car();
-            tollBooth.push_back(tempCar);
-            cout << "Car joined: ";
-        }
-        tempCar.print(); // output car popped or pushed
-        // output list at end of period
-        CurrentQueueToConsole(tollBooth);
         cout << endl;
     }
 
